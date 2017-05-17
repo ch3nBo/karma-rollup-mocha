@@ -1,9 +1,9 @@
 module.exports = function (config) {
-	let cfg={
+	let cfg = {
 		basePath: '.',
 		frameworks: ['mocha', 'chai'],
 		browsers: ['Chrome'],
-		reporters: ['mocha'],
+		reporters: ['mocha', 'coverage'],
 		files: [
 			'test/**/*.spec.js',
 			// Watch src files for changes but
@@ -13,8 +13,14 @@ module.exports = function (config) {
 		],
 		preprocessors: {
 			//'test/buble/**/*.spec.js': ['rollup'],
-			'src/**/*.js': ['rollupBabel'],
-			'test/**/*.spec.js': ['rollupBabel'],
+			'src/**/*.js': ['rollupBabel', 'coverage'],
+			'test/**/*.spec.js': ['rollupBabel', 'coverage'],
+		},
+		coverageReporter: {
+			reporters: [
+				{ type: 'lcovonly', subdir: '.' },
+				{ type: 'json', subdir: '.' },
+			]
 		},
 		rollupPreprocessor: {
 			plugins: [
@@ -47,7 +53,7 @@ module.exports = function (config) {
 		}
 	};
 	if (process.env.TRAVIS) {
-        cfg.browsers = ['Chrome_travis_ci'];
-    }
+		cfg.browsers = ['Chrome_travis_ci'];
+	}
 	config.set(cfg);
 };
